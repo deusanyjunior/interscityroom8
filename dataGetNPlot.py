@@ -111,8 +111,8 @@ while True:
 
     for d in data[1:]:
         try:
-            sensor1.append(calc(d['ads_0_1'] * scales[gainIdx]) + d['temperature'])
-            sensor2.append(calc(d['ads_2_3'] * scales[gainIdx]) + d['temperature'])
+            sensor1.append(calc(d['ads_0_1'] * scales[gainIdx]) + 0*d['temperature'])
+            sensor2.append(calc(d['ads_2_3'] * scales[gainIdx]) + 0*d['temperature'])
             dht.append(d['temperature'])
             ldr.append(d['ldr'])
             lux.append(d['lux'])
