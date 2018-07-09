@@ -14,7 +14,7 @@ p = [ 2.0325591E+01, 3.3013079E+00, 1.2638462E-01, -8.2883695E-04 ]
 q = [ 1.7595577E-01, 7.9740521E-03, 0.0 ]
 
 scales = [ 0.1875, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125 ]
-gainIdx = 3
+gainIdx = 5
 
 
 def calc(v):
@@ -51,8 +51,8 @@ dht = [ ]
 heating = [ ]
 roundy = [ ]
 
-i = time.time() - 3600 * (3)
-time_step = 32
+i = time.time() - 3600 * (72)
+time_step = 512
 #end = time.time() - 1000 * 2 - 3600 * ( 12 - 6 )
 
 
@@ -104,8 +104,8 @@ while True:
 
     for d in data[1:]:
         try:
-            sensor1.append(calc(d['ads_0_1'] * scales[gainIdx]) + d['temperature'])
-            sensor2.append(calc(d['ads_2_3'] * scales[gainIdx]) + d['temperature'])
+            sensor1.append(calc(d['ads_0_1'] * scales[gainIdx]) + 0*d['temperature'])
+            sensor2.append(calc(d['ads_2_3'] * scales[gainIdx]) + 0*d['temperature'])
             dht.append(d['temperature'])
             ldr.append(d['ldr'])
             lux.append(d['lux'])
