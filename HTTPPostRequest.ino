@@ -6,8 +6,8 @@
 
 /////////////////////////////////////////////////////////////////////////
 // Wireless settings
-const char* ssid = "wifissid";
-const char* password = "wifipassword";
+const char* ssid = "ssid";
+const char* password = "password";
 
 ////////////////////////////////////////////////////////////////////////
 //InterSCity host
@@ -64,13 +64,13 @@ void loop() {
     }
     // set current time based on statup time
     time (&rawTime);
-    now = rawTime + startTime; 
+    now = rawTime + startTime;
     ts = *localtime(&now);
     strftime(timeBuffer, sizeof(timeBuffer), "%Y-%m-%dT%H:%M:%S.000Z", &ts);
-    
+
     // Post a message to InterSCity
     Serial.println("\nNew HTTP Post Request to InterSCity Platform");
-    
+
     // define the post URL
     // http://143.107.45.126:30134/adaptor/resources/{uuid}/data/{resource}
     String address = String("http://")
@@ -82,7 +82,7 @@ void loop() {
                      + String(resource);
     Serial.print("Host address: ");
     Serial.println(address);
-    
+
     // define JSON content
     // example: {"data":[{"ldr":963,"timestamp":"2018-05-17T15:01:23.000Z"}]}
     char JSONmessageBuffer[300];
@@ -114,7 +114,7 @@ void loop() {
     Serial.println(httpCode);    //Print HTTP return code
     Serial.print("Payload: ");
     Serial.println(payload);     //Print request response payload
-    
+
     http.end();  //Close connection
 
   } else {
@@ -175,25 +175,25 @@ bool getTimeNTP() {
     // or two words, long. First, esxtract the two words:
     unsigned long highWord = word(packetBuffer[40], packetBuffer[41]);
     unsigned long lowWord = word(packetBuffer[42], packetBuffer[43]);
-   
+
     // combine the four bytes (two words) into a long integer
     // this is NTP time (seconds since Jan 1 1900):
     unsigned long secsSince1900 = highWord << 16 | lowWord;
-    
+
     // now convert NTP time into everyday time:
     // Unix time starts on Jan 1 1970. In seconds, that's 2208988800:
     const unsigned long seventyYears = 2208988800UL;
-   
+
     // subtract seventy years:
     //unsigned long epoch = secsSince1900 - seventyYears;
     now = secsSince1900 - seventyYears;
 
-    // backup time after seventy years 
+    // backup time after seventy years
     time( &rawTime );
     startTime = now - rawTime;
 
     Serial.println("Time defined");
-    
+
     return true;
   }
 }
