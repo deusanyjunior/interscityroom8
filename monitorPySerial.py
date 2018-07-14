@@ -48,4 +48,4 @@ while True:
 	r = requests.post('http://143.107.45.126:30134/adaptor/resources/' + uuid + '/data/room_monitoring', json=json_data)
 	print (len(r.text))
 
-	outputfile.write(timestamp+","+data[0]+","+data[1]+","+data[2]+","+data[3]+","+data[4]+","+data[5]+","+str(len(r.text))+"\n");
+	outputfile.write(timestamp+","+data[0]+","+data[1]+","+data[2]+","+data[3]+","+data[4]+","+data[5]+","+data[6]+","+data[7]+","+data[8]+","+data[9]+","+data[10]+","+str(len(r.text))+"\n");
