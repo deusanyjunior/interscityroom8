@@ -56,8 +56,8 @@ time_step = 512
 
 #initial = datetime.datetime.fromtimestamp(i)
 #t = initial.strftime('%Y-%m-%dT%H:%M:%S')
-t = '2018-06-01T13:00:00' # start data
-t2 = '2018-06-01T18:00:00' # end date
+t = '2018-06-04T00:00:00' # start data
+t2 = '2018-06-05T23:00:00' # end date
 
 # t = datetime.datetime.fromtimestamp('2018-03-06T09:30:30')
 labels = []
