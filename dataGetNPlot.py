@@ -93,14 +93,8 @@ while True:
         break
 
     print len(data)
-<<<<<<< HEAD
     # print "data: "
     # print data
-=======
-    print "data: "
-    print data
->>>>>>> atualizando o plot de dados para um período com visualização de fluxo no sensor2
-
     # if len(data) < 1000:
     #     breakrange(0, len(dht), 4000)
 
