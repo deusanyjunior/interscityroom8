@@ -56,8 +56,8 @@ time_step = 512
 
 #initial = datetime.datetime.fromtimestamp(i)
 #t = initial.strftime('%Y-%m-%dT%H:%M:%S')
-t = '2018-06-01T10:00:00' # start data
-t2 = '2018-06-01T23:00:00' # end date
+t = '2018-06-01T13:00:00' # start data
+t2 = '2018-06-01T18:00:00' # end date
 
 # t = datetime.datetime.fromtimestamp('2018-03-06T09:30:30')
 labels = []
@@ -93,8 +93,8 @@ while True:
         break
 
     print len(data)
-    print "data: "
-    print data
+    # print "data: "
+    # print data
 
     # if len(data) < 1000:
     #     breakrange(0, len(dht), 4000)
@@ -206,22 +206,15 @@ plt.legend([humidity_line], ['Humidity'])
 
 ##############
 
-# plt.figure()
-#
-# plt.ylim(950, 1024)
-#
-# plt.xticks(range(0, len(dht), time_step), [ labels[j] for j in range(0, len(dht), time_step)], rotation = 30)
-#
-# #ax = plt.add_subplot(111)
-#
-# #ax.set_xlabel('xlabel')
-# plt.title('LDR')
-# #plt.ylabel('%')
-#
-#
-# ldr_line, = plt.plot(ldr)
-#
-# plt.legend([ldr_line], ['LDR'])
+plt.figure()
+plt.ylim(450, 850)
+plt.xticks(range(0, len(dht), time_step), [ labels[j] for j in range(0, len(dht), time_step)], rotation = 30)
+#ax = plt.add_subplot(111)
+#ax.set_xlabel('xlabel')
+plt.title('LDR')
+#plt.ylabel('%')
+ldr_line, = plt.plot(ldr)
+plt.legend([ldr_line], ['LDR'])
 
 #####
 
