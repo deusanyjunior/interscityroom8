@@ -14,7 +14,7 @@ p = [ 2.0325591E+01, 3.3013079E+00, 1.2638462E-01, -8.2883695E-04 ]
 q = [ 1.7595577E-01, 7.9740521E-03, 0.0 ]
 
 scales = [ 0.1875, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125 ]
-gainIdx = 3
+gainIdx = 5
 
 
 def calc(v):
@@ -64,6 +64,7 @@ labels = []
 maxs1=[]
 maxt1=[]
 dhtmax=[]
+diffmaxs=[]
 last_round=-1
 maxs=0
 
@@ -127,6 +128,7 @@ while True:
                 maxs1.append(maxs)
                 maxt1.append(labels[-1])
                 dhtmax.append(dht[-1])
+                diffmaxs.append(np.log(maxs-dht[-1])*10+25)
                 last_round = -1
                 maxs = 0;
             else:
@@ -238,7 +240,7 @@ time_step = 64
 
 plt.figure()
 plt.xticks(range(0, len(maxt1), time_step), [ maxt1[j] for j in range(0, len(maxt1), time_step)], rotation = 30)
-osf_line, tmp_line, = plt.plot(maxt1,maxs1,'g-',maxt1,dhtmax,'b-')
-plt.legend([osf_line,tmp_line],['osfm','temperature'])
+osf_line, tmp_line, diffmaxs_line, = plt.plot(maxt1,maxs1,'g-',maxt1,dhtmax,'b-', maxt1,diffmaxs,'r-')
+plt.legend([osf_line,tmp_line,diffmaxs_line],['osfm','temperature','diff+25'])
 
 plt.show()
