@@ -14,7 +14,7 @@ p = [ 2.0325591E+01, 3.3013079E+00, 1.2638462E-01, -8.2883695E-04 ]
 q = [ 1.7595577E-01, 7.9740521E-03, 0.0 ]
 
 scales = [ 0.1875, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125 ]
-gainIdx = 5
+gainIdx = 3
 
 
 def calc(v):
@@ -38,8 +38,6 @@ def calc(v):
 
 #today = datetime.datetime.now()
 
-
-
 sensor1 = [ ]
 sensor2 = [ ]
 
@@ -49,18 +47,26 @@ ldr = [ ]
 dht = [ ]
 
 heating = [ ]
-roundy = [ ]
+round = [ ]
 
-i = time.time() - 3600 * (72)
+#i = time.time() - 3600 * (72)
 time_step = 512
 #end = time.time() - 1000 * 2 - 3600 * ( 12 - 6 )
 
 
-initial = datetime.datetime.fromtimestamp(i)
-t = initial.strftime('%Y-%m-%dT%H:%M:%S')
+#initial = datetime.datetime.fromtimestamp(i)
+#t = initial.strftime('%Y-%m-%dT%H:%M:%S')
+t = '2018-06-05T13:00:00' # start data
+t2 = '2018-06-06T03:00:00' # end date
 
 # t = datetime.datetime.fromtimestamp('2018-03-06T09:30:30')
 labels = []
+
+maxs1=[]
+maxt1=[]
+dhtmax=[]
+last_round=-1
+maxs=0
 
 while True:
 
@@ -75,7 +81,8 @@ while True:
 
     json = requests.post(
     'http://143.107.45.126:30134/collector/resources/' + uuid + '/data',
-    json={'start_date': t, 'limit': '1000' })
+    json={'start_date': t, 'end_date': t2, 'limit': '1000' })
+
     # json = requests.post(
     # 	'http://143.107.45.126:30134/collector/resources/' + uuid + '/data',
     # 	json={'start_date': t })
@@ -92,7 +99,7 @@ while True:
         break
 
     print len(data)
-    print "data: "
+    # print "data: "
     # print data
 
     # if len(data) < 1000:
@@ -104,28 +111,39 @@ while True:
 
     for d in data[1:]:
         try:
-            sensor1.append(calc(d['ads_0_1'] * scales[gainIdx]) + 0*d['temperature'])
-            sensor2.append(calc(d['ads_2_3'] * scales[gainIdx]) + 0*d['temperature'])
+            sensor1.append(calc(d['ads_0_1'] * scales[gainIdx]) + d['temperature'])
+            sensor2.append(calc(d['ads_2_3'] * scales[gainIdx]) + d['temperature'])
             dht.append(d['temperature'])
             ldr.append(d['ldr'])
             lux.append(d['lux'])
             humidity.append(d['humidity'])
             t = d['date']
             heating.append(d['heating']+24)
-            roundy.append(d['round'])
+            round.append(d['round'])
 
             datetime_object = datetime.datetime.strptime(t[:len(t)-1], '%Y-%m-%dT%H:%M:%S.%f') - datetime.timedelta(hours=3)
+            labels.append(datetime_object.strftime('%m%d%H%M%S'))
 
-            labels.append(datetime_object.strftime('%H:%M:%S'))
+            if(round[-1]<last_round):
+                maxs1.append(maxs)
+                maxt1.append(labels[-1])
+                dhtmax.append(dht[-1])
+                last_round = -1
+                maxs = 0;
+            else:
+                last_round = round[-1]
+            if(sensor1[-1] > maxs):
+                maxs = sensor1[-1]
+
         except KeyError, e:
             print "KeyError: " + str(e)
             print d
             datetime_object = datetime.datetime.strptime(t[:len(t)-1], '%Y-%m-%dT%H:%M:%S.%f') - datetime.timedelta(hours=3)
-            labels.append(datetime_object.strftime('%H:%M:%S'))
+            labels.append(datetime_object.strftime('%m%d%H%M%S'))
             continue;
             # break;
 
-    i += 1000 * 2
+    #i += 1000 * 2
 
 plt.ylim(15, 30)
 
@@ -141,7 +159,7 @@ plt.ylabel('Temperature (Celsius)')
 sensor1_line, = plt.plot(sensor1)
 DHT_line, = plt.plot(dht)
 heating_line, = plt.plot(heating)
-# roundy_line, = plt.plot(roundy)
+# round_line, = plt.plot(round)
 
 plt.legend([sensor1_line, DHT_line, heating_line], ['Sensor 1', 'DHT','heating'])
 
@@ -205,23 +223,23 @@ plt.legend([humidity_line], ['Humidity'])
 
 ##############
 
-# plt.figure()
-#
-# plt.ylim(950, 1024)
-#
-# plt.xticks(range(0, len(dht), time_step), [ labels[j] for j in range(0, len(dht), time_step)], rotation = 30)
-#
-# #ax = plt.add_subplot(111)
-#
-# #ax.set_xlabel('xlabel')
-# plt.title('LDR')
-# #plt.ylabel('%')
-#
-#
-# ldr_line, = plt.plot(ldr)
-#
-# plt.legend([ldr_line], ['LDR'])
+plt.figure()
+plt.ylim(450, 850)
+plt.xticks(range(0, len(dht), time_step), [ labels[j] for j in range(0, len(dht), time_step)], rotation = 30)
+#ax = plt.add_subplot(111)
+#ax.set_xlabel('xlabel')
+plt.title('LDR')
+#plt.ylabel('%')
+ldr_line, = plt.plot(ldr)
+plt.legend([ldr_line], ['LDR'])
 
 #####
+
+time_step = 64
+
+plt.figure()
+plt.xticks(range(0, len(maxt1), time_step), [ maxt1[j] for j in range(0, len(maxt1), time_step)], rotation = 30)
+osf_line, tmp_line, = plt.plot(maxt1,maxs1,'g-',maxt1,dhtmax,'b-')
+plt.legend([osf_line,tmp_line],['osfm','temperature'])
 
 plt.show()
