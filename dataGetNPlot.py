@@ -53,7 +53,6 @@ round = [ ]
 time_step = 512
 #end = time.time() - 1000 * 2 - 3600 * ( 12 - 6 )
 
-
 #initial = datetime.datetime.fromtimestamp(i)
 #t = initial.strftime('%Y-%m-%dT%H:%M:%S')
 t = '2018-06-05T13:00:00' # start data
