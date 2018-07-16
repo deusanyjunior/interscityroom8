@@ -9,7 +9,8 @@ outputfile = open("sensorsRoom8-"+datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.
 outputfile.write("sensorLDR,sensorSoilMoisture,sensorDHT22Humidity,sensorDHT22TemperatureCelsius,sensorADS_0_1,sensorADS_2_3")
 
 # uuid = 'f6a72f8c-dc5f-42b9-bc25-cd7c6a66d1c9' ## uuid for testing
-uuid = 'e8dcf7f8-4977-4295-a955-3ee3daf18714'
+# uuid = 'e8dcf7f8-4977-4295-a955-3ee3daf18714' ## old data
+uuid = 'd1557e9b-ea3e-45f8-828b-820055230e20'
 
 while True:
 	# timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S.%f').split()
@@ -37,7 +38,8 @@ while True:
                     "adsm_2_3"   	: "{9}",
                     "ads2_0_1"		: "{10}",
                     "ads2_2_3"		: "{11}",
-                    "heating"    	: "{12}"
+                    "ads_gain"		: "{12}",
+                    "heating"    	: "{13}"
                 }}
             ]
         }}
